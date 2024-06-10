@@ -11,9 +11,6 @@ on:
 permissions:
   contents: read
 
-env:
-  ANT_OPTS: -Djava.security.manager=allow
-
 jobs:
   test:
     runs-on: ${{ matrix.os }}
@@ -51,6 +48,14 @@ jobs:
           brew install automake --force
           brew install libtool --force
           brew install texinfo --force
+      - name: Java Flags
+        run: |
+          # if java is greater than 17, we need to enable the security manager
+          if [ ${{ matrix.java }} -gt 17 ]; then
+            export ANT_OPTS="-Djava.security.manager=allow"
+            # enable for subsequent tasks
+            echo "ANT_OPTS=-Djava.security.manager=allow" >> $GITHUB_ENV
+          fi
       - name: Checkstyle
         if: contains(matrix.os, 'ubuntu') && contains(matrix.java, '8')
         run: |
