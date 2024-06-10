@@ -43,6 +43,10 @@ import java.util.Arrays;
  *
  * <p>Certain features like reflection and JNI access are configured by this feature; to enable static optimized
  * support for JNA, see the {@link SubstrateStaticJNA} feature.
+ *
+ * @since 5.15.0
+ * @author Sam Gammon, sam@elide.dev
+ * @author Dario Valdespino, dario@elide.dev
  */
 public final class JavaNativeAccess extends AbstractJNAFeature implements Feature {
     static final String NATIVE_LAYOUT = "com.sun.jna.Native";

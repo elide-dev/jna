@@ -81,8 +81,6 @@
   <property name="platform-jpms-jar" value="${dist}/jna-platform-jpms.jar" />
 
   <!-- defined maven snapshots and staging repository id and url -->
-  <property name="maven-local-repository-id" value="local-stage" />
-  <property name="maven-local-repository-url" value="file://${basedir}/build/stage" />
   <property name="maven-snapshots-repository-id" value="oss.sonatype.org" />
   <property name="maven-snapshots-repository-url" value="https://oss.sonatype.org/content/repositories/snapshots/" />
   <property name="maven-staging-repository-id" value="oss.sonatype.org" />
@@ -90,7 +88,6 @@
 
   <!-- Miscellaneous -->
   <property name="build" value="build"/>
-  <property name="build.stage" value="build/stage"/>
   <property name="build.compiler.emacs" value="true"/>
 
   <property name="pom-base" value="pom-jna.xml" />
@@ -240,7 +237,6 @@
     <property name="jni.info" location="${build.headers}/jni.properties"/>
 
     <mkdir dir="${build}"/>
-    <mkdir dir="${build.stage}" />
     <mkdir dir="${build.native}"/>
     <mkdir dir="${build.headers}"/>
     <mkdir dir="${classes}"/>
@@ -1620,64 +1616,6 @@ cd ..
     </artifact:mvn>
   </target>
 
-  <!-- NOTE: The 'deploy-local' target deploys to `build/stage`. -->
-  <target name="deploy-local" depends="dist,-bootstrap-maven" description="deploy to 'build/stage' locally">
-    <artifact:mvn failonerror="true">
-      <arg value="org.apache.maven.plugins:maven-deploy-plugin:2.7:deploy-file"/>
-      <arg value="-Durl=${maven-local-repository-url}"/>
-      <arg value="-DrepositoryId=${maven-local-repository-id}"/>
-      <arg value="-DpomFile=${pom}"/>
-      <arg value="-Dfile=${dist-jar}"/>
-      <arg value="-Dfiles=${maven-sources-jar},${maven-javadoc-jar},${dist-aar}"/>
-      <arg value="-Dtypes=jar,jar,aar"/>
-      <arg value="-Dclassifiers=sources,javadoc,"/>
-    </artifact:mvn>
-
-    <artifact:mvn failonerror="true">
-      <arg value="org.apache.maven.plugins:maven-deploy-plugin:2.7:deploy-file"/>
-      <arg value="-Durl=${maven-local-repository-url}"/>
-      <arg value="-DrepositoryId=${maven-local-repository-id}"/>
-      <arg value="-DpomFile=${pom-platform}"/>
-      <arg value="-Dfile=${platform-jar}"/>
-      <arg value="-Dfiles=${platform-sources-jar},${platform-javadoc-jar}"/>
-      <arg value="-Dtypes=jar,jar"/>
-      <arg value="-Dclassifiers=sources,javadoc"/>
-    </artifact:mvn>
-
-    <artifact:mvn failonerror="true">
-      <arg value="org.apache.maven.plugins:maven-deploy-plugin:2.7:deploy-file"/>
-      <arg value="-Durl=${maven-local-repository-url}"/>
-      <arg value="-DrepositoryId=${maven-local-repository-id}"/>
-      <arg value="-DpomFile=${pom-jpms}"/>
-      <arg value="-Dfile=${dist-jar-jpms}"/>
-      <arg value="-Dfiles=${maven-sources-jar},${maven-javadoc-jar}"/>
-      <arg value="-Dtypes=jar,jar"/>
-      <arg value="-Dclassifiers=sources,javadoc"/>
-    </artifact:mvn>
-
-    <artifact:mvn failonerror="true">
-      <arg value="org.apache.maven.plugins:maven-deploy-plugin:2.7:deploy-file"/>
-      <arg value="-Durl=${maven-local-repository-url}"/>
-      <arg value="-DrepositoryId=${maven-local-repository-id}"/>
-      <arg value="-DpomFile=${pom-graalvm}"/>
-      <arg value="-Dfile=${dist-jar-graalvm}"/>
-      <arg value="-Dfiles=${maven-sources-jar},${maven-javadoc-jar}"/>
-      <arg value="-Dtypes=jar,jar"/>
-      <arg value="-Dclassifiers=sources,javadoc"/>
-    </artifact:mvn>
-
-    <artifact:mvn failonerror="true">
-      <arg value="org.apache.maven.plugins:maven-deploy-plugin:2.7:deploy-file"/>
-      <arg value="-Durl=${maven-local-repository-url}"/>
-      <arg value="-DrepositoryId=${maven-local-repository-id}"/>
-      <arg value="-DpomFile=${pom-platform-jpms}"/>
-      <arg value="-Dfile=${platform-jpms-jar}"/>
-      <arg value="-Dfiles=${platform-sources-jar},${platform-javadoc-jar}"/>
-      <arg value="-Dtypes=jar,jar"/>
-      <arg value="-Dclassifiers=sources,javadoc"/>
-    </artifact:mvn>
-  </target>
-
   <!-- NOTE: The 'deploy' target works only if the version (jna.version in build.xml) ends in '-SNAPSHOT'. -->
   <target name="deploy" depends="dist,-bootstrap-maven" description="deploy snapshot version to Maven snapshot repository">
     <artifact:mvn failonerror="true">
@@ -1821,7 +1759,6 @@ cd ..
           <dependency groupId="org.apache.maven" artifactId="maven-artifact-manager" version="2.0.10" />
           <dependency groupId="org.apache.maven" artifactId="maven-plugin-registry" version="2.0.10" />
           <dependency groupId="org.apache.maven" artifactId="maven-plugin-api" version="2.0.10" />
-          <dependency groupId="org.codehaus.plexus" artifactId="plexus-utils" version="1.5.6" />
           <dependency groupId="org.codehaus.plexus" artifactId="plexus-utils" version="3.0.15" />
       </artifact:dependencies>
       <artifact:dependencies pathId="dependency.dummy2">

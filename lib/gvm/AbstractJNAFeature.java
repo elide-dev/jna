@@ -34,8 +34,16 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
-// Provides common logic for JNA-related GraalVM feature classes. These classes should only be included
-// at build time for a `native-image` target.
+/**
+ * Provides common logic for JNA-related GraalVM feature classes. These classes should only be included at build time
+ * for a `native-image` target.
+ *
+ * @since 5.15.0
+ * @author Sam Gammon, sam@elide.dev
+ * @author Dario Valdespino, dario@elide.dev
+ * @see JavaNativeAccess
+ * @see SubstrateStaticJNA
+ */
 abstract class AbstractJNAFeature implements Feature {
     /**
      * Obtain a reference to a method on a class, in order to register it for reflective access
