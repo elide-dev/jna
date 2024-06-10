@@ -11,6 +11,9 @@ on:
 permissions:
   contents: read
 
+env:
+  ANT_OPTS: -Djava.security.manager=allow
+
 jobs:
   test:
     runs-on: ${{ matrix.os }}
