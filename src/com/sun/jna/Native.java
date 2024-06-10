@@ -937,6 +937,24 @@ public final class Native implements Version {
      * jar file.
      */
     private static void loadNativeDispatchLibrary() {
+        if (Boolean.getBoolean("jna.static")) {
+            LOG.log(DEBUG_JNA_LOAD_LEVEL, "JNA static mode: trying (via loadLibrary) {0}", libName);
+            boolean loaded = false;
+            try {
+                System.loadLibrary(libName);
+                loaded = true;
+            } catch (UnsatisfiedLinkError e) {
+                // in static mode, we should fail hard unless we are told to fallback
+                if (!Boolean.getBoolean("jna.static.fallback")) {
+                    LOG.log(Level.ERROR, "JNA Warning: static initialization of JNA failed", e);
+                    throw e;
+                }
+            }
+            if (loaded) {
+                LOG.log(DEBUG_JNA_LOAD_LEVEL, "JNA static mode: loaded native library {0}", libName);
+                return;
+            }
+        }
         if (!Boolean.getBoolean("jna.nounpack")) {
             try {
                 removeTemporaryFiles();
