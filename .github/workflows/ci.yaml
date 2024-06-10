@@ -57,6 +57,16 @@ jobs:
         run: |
           ant test
           ant test-platform
+      - name: Local Deploy
+        run: ant deploy-local
+      - uses: actions/upload-artifact@v4
+        with:
+          name: jna-maven-bundle-${{ matrix.os }}-jdk${{ matrix.java }}-${{ github.sha }}
+          path: build/stage
+          if-no-files-found: error
+          retention-days: 14
+          compression-level: 1
+          overwrite: true
 
   # test-graalvm:
   #   strategy:
