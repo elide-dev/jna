@@ -149,6 +149,9 @@ public final class SubstrateStaticJNA extends AbstractJNAFeature {
             // We need to rename it first using the platform-specific convention or the build will fail
             File platformLib = new File(extractedLib.getParentFile(), filename);
             if (!extractedLib.renameTo(platformLib)) throw new IllegalStateException("Renaming extract file failed");
+
+            // Cleanup the extracted file on JVM exit
+            platformLib.deleteOnExit();
             extractedLib = platformLib;
         } catch (IOException e) {
             throw new RuntimeException("Failed to extract native dispatch library from resources", e);
