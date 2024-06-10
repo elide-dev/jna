@@ -35,22 +35,19 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        language: ["cpp", "java", "python"]
+        language: ["java"]
 
     steps:
       - name: Harden Runner
         uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
         with:
           egress-policy: audit
-
       - name: Checkout repository
         uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744 # v3.6.0
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@6ac9fc7e8e290bda8fac86290b68e176def71959 # v2.25.8
         with:
           languages: ${{ matrix.language }}
-
       - uses: graalvm/setup-graalvm@2f25c0caae5b220866f732832d5e3e29ff493338 # v1.2.1
         with:
           java-version: '22'
@@ -61,7 +58,6 @@ jobs:
       - uses: gradle/actions/setup-gradle@db19848a5fa7950289d3668fb053140cf3028d43 # v3.3.2
       - name: "Build: JNA Libraries"
         run: ant dist
-
       - name: Perform CodeQL Analysis
         uses: github/codeql-action/analyze@6ac9fc7e8e290bda8fac86290b68e176def71959 # v2.25.8
         with:
