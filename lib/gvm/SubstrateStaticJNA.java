@@ -36,6 +36,10 @@ import org.graalvm.nativeimage.hosted.Feature;
  *
  * <p>This class extends the base {@link com.sun.jna.JavaNativeAccess} feature by providing JNA's JNI layer statically,
  * so that no library unpacking step needs to take place.
+ *
+ * @since 5.15.0
+ * @author Sam Gammon, sam@elide.dev
+ * @author Dario Valdespino, dario@elide.dev
  */
 public final class SubstrateStaticJNA extends AbstractJNAFeature {
     @Override
