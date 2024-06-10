@@ -105,9 +105,22 @@ import java.util.logging.Logger;
  * <h2>Native Library Loading</h2>
  * Native libraries loaded via {@link #load(Class)} may be found in
  * <a href="NativeLibrary.html#library_search_paths">several locations</a>.
+ * <h2>Static JNI Mode</h2>
+ * <p>When running within a GraalVM Native Image with static JNI active, the
+ * property <code>jna.static=true</code> is set by default, which
+ * short-circuits the library search process and instead loads JNI statically
+ * from the host native image binary. This property must be set to properly
+ * initialize JNA's native code, and should only be set if JNA is built
+ * statically. In such cases, there should be no failure, but at the
+ * developer's discretion, <code>jna.static.fallback=true</code> can also be
+ * set, which engages in JNA's regular library loading behavior if the static
+ * JNA code fails to initialize. The <code>jna.static</code> and
+ * <code>jna.static.fallback</code> properties are supported as of JNA
+ * version <code>5.15.0</code>.</p>
  * @see Library
  * @author Todd Fast, todd.fast@sun.com
  * @author twall@users.sf.net
+ * @author Sam Gammon, sam@elide.dev
  */
 public final class Native implements Version {
 
