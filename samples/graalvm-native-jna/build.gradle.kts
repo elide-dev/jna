@@ -44,16 +44,24 @@ dependencies {
   nativeImageClasspath(libs.jna.graalvm)
 }
 
+val nativeImageDebug: String by properties
+
 graalvmNative {
   testSupport = true
   toolchainDetection = false
 
   binaries {
     named("main") {
-      buildArgs.addAll(listOf(
+      buildArgs.addAll(if (nativeImageDebug != "true") emptyList() else listOf(
+        "--verbose",
+        "--debug-attach",
         "-H:+UnlockExperimentalVMOptions",
-        "-H:+ReportExceptionStackTraces",
         "-H:+JNIEnhancedErrorCodes",
+        "-H:+SourceLevelDebug",
+        "-H:-DeleteLocalSymbols",
+        "-H:-RemoveUnusedSymbols",
+        "-H:+PreserveFramePointer",
+        "-H:+ReportExceptionStackTraces",
       ))
     }
   }
