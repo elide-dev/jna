@@ -1565,22 +1565,16 @@ cd ..
     </subant>
   </target>
 
-  <target name="install" depends="dist,-bootstrap-maven" description="Install jna and jna-platform artifacts into local maven repository">
-    <artifact:mvn failonerror="true">
-      <arg value="org.apache.maven.plugins:maven-install-plugin:2.5:install-file"/>
-      <arg value="-DpomFile=${pom}"/>
-      <arg value="-Dfile=${dist-jar}"/>
-      <arg value="-Dsources=${maven-sources-jar}"/>
-      <arg value="-Djavadoc=${maven-javadoc-jar}"/>
-    </artifact:mvn>
-
+  <target name="install-aar" depends="-bootstrap-maven">
     <artifact:mvn failonerror="true">
       <arg value="org.apache.maven.plugins:maven-install-plugin:2.5:install-file"/>
       <arg value="-DpomFile=${pom}"/>
       <arg value="-Dfile=${dist-aar}"/>
       <arg value="-Dpackaging=aar"/>
     </artifact:mvn>
+  </target>
 
+  <target name="install-jpms" depends="-bootstrap-maven">
     <artifact:mvn failonerror="true">
       <arg value="org.apache.maven.plugins:maven-install-plugin:2.5:install-file"/>
       <arg value="-DpomFile=${pom-jpms}"/>
@@ -1588,13 +1582,17 @@ cd ..
       <arg value="-Dsources=${maven-sources-jar}"/>
       <arg value="-Djavadoc=${maven-javadoc-jar}"/>
     </artifact:mvn>
+  </target>
 
+  <target name="install-graalvm" depends="-bootstrap-maven">
     <artifact:mvn failonerror="true">
       <arg value="org.apache.maven.plugins:maven-install-plugin:2.5:install-file"/>
       <arg value="-DpomFile=${pom-graalvm}"/>
       <arg value="-Dfile=${dist-jar-graalvm}"/>
     </artifact:mvn>
+  </target>
 
+  <target name="install-platform" depends="-bootstrap-maven">
     <artifact:mvn failonerror="true">
       <arg value="org.apache.maven.plugins:maven-install-plugin:2.5:install-file"/>
       <arg value="-DpomFile=${pom-platform}"/>
@@ -1602,7 +1600,9 @@ cd ..
       <arg value="-Dsources=${platform-sources-jar}"/>
       <arg value="-Djavadoc=${platform-javadoc-jar}"/>
     </artifact:mvn>
+  </target>
 
+  <target name="install-platform-jpms" depends="-bootstrap-maven">
     <artifact:mvn failonerror="true">
       <arg value="org.apache.maven.plugins:maven-install-plugin:2.5:install-file"/>
       <arg value="-DpomFile=${pom-platform-jpms}"/>
@@ -1611,6 +1611,20 @@ cd ..
       <arg value="-Djavadoc=${platform-javadoc-jar}"/>
     </artifact:mvn>
   </target>
+
+  <target name="install-base" depends="-bootstrap-maven">
+    <artifact:mvn failonerror="true">
+      <arg value="org.apache.maven.plugins:maven-install-plugin:2.5:install-file"/>
+      <arg value="-DpomFile=${pom}"/>
+      <arg value="-Dfile=${dist-jar}"/>
+      <arg value="-Dsources=${maven-sources-jar}"/>
+      <arg value="-Djavadoc=${maven-javadoc-jar}"/>
+    </artifact:mvn>
+  </target>
+
+  <target name="install"
+          depends="dist,-bootstrap-maven,install-base,install-aar,install-jpms,install-graalvm,install-platform,install-platform-jpms"
+          description="Install jna and jna-platform artifacts into local maven repository" />
 
   <!-- NOTE: The 'deploy' target works only if the version (jna.version in build.xml) ends in '-SNAPSHOT'. -->
   <target name="deploy" depends="dist,-bootstrap-maven" description="deploy snapshot version to Maven snapshot repository">
