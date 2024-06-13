@@ -21,18 +21,24 @@ jobs:
     name: Test GVM 22, ubuntu-latest
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: graalvm/setup-graalvm@v1
+      - name: Harden Runner
+        uses: step-security/harden-runner@17d0e2bd7d51742c71671bd19fa12bdc9d40a3d6 # v2.8.1
+        with:
+          egress-policy: audit
+
+      - uses: actions/checkout@a5ac7e51b41094c92402da3b24376905380afc29 # v4.1.6
+      - uses: graalvm/setup-graalvm@2f25c0caae5b220866f732832d5e3e29ff493338 # v1.2.1
         with:
           java-version: '22'
           distribution: 'graalvm-community'
           github-token: ${{ secrets.GITHUB_TOKEN }}
       - name: Linux requirements
         run: sudo apt-get -y install texinfo
-      - uses: gradle/actions/setup-gradle@v3
+      - uses: gradle/actions/setup-gradle@db19848a5fa7950289d3668fb053140cf3028d43 # v3.3.2
       - name: "Build: Compile & Install JNA"
         run: ant && ant install
       - name: "Build: Native Images (Dynamic JNI)"
         run: ant nativeImage && ant nativeRun
       - name: "Build: Native Image (Static JNI)"
         run: ant nativeImageStatic && ant nativeRunStatic
+
