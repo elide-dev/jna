@@ -121,19 +121,15 @@
            classpathref="maven-ant-tasks.classpath" />
 
   <!-- Condition describing whether we are building on JDK9+ -->
-  <target name="-jdk11plus-only">
-    <condition property="jdk11plus">
-      <and>
-        <not>
-          <equals arg1="1.8" arg2="${ant.java.version}"/>
-        </not>
-        <not>
-          <equals arg1="1.9" arg2="${ant.java.version}"/>
-        </not>
-        <not>
-          <equals arg1="10" arg2="${ant.java.version}"/>
-        </not>
-      </and>
+  <target name="-jdk21plus-only">
+    <condition property="jdk21plus">
+      <or>
+        <equals arg1="21" arg2="${ant.java.version}"/>
+        <equals arg1="22" arg2="${ant.java.version}"/>
+        <equals arg1="23" arg2="${ant.java.version}"/>
+        <equals arg1="24" arg2="${ant.java.version}"/>
+        <equals arg1="25" arg2="${ant.java.version}"/>
+      </or>
     </condition>
   </target>
 
@@ -287,8 +283,8 @@
     </path>
   </target>
 
-  <target name="compile-graalvm" depends="-setup,-jdk11plus-only"
-          if="${jdk11plus}"
+  <target name="compile-graalvm" depends="-setup,-jdk21plus-only"
+          if="${jdk21plus}"
           description="Compile GraalVM Java sources">
     <!-- Need GraalVM SVM artifact to build features for `jna-graalvm.jar` -->
     <path id="graalvm.classpath" />
