@@ -103,8 +103,6 @@ public final class JavaNativeAccess extends AbstractJNAFeature implements Featur
 
         registerJniClass(Pointer.class);
         registerJniFields(fields(Pointer.class, "peer"));
-        // @TODO: how do we register constructors?
-        // registerJniMethods(method(Pointer.class, "<init>", long.class));
 
         registerJniClass(PointerType.class);
         registerJniFields(fields(PointerType.class, "pointer"));
