@@ -38,6 +38,8 @@ jobs:
         with:
           java-version: ${{ matrix.java }}
           distribution: 'zulu'
+      - name: Setup codebase
+        run: bash setup.sh
       - name: Linux requirements
         if: contains(matrix.os, 'ubuntu')
         run: sudo apt-get -y install texinfo
