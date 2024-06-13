@@ -188,7 +188,7 @@ public final class SubstrateStaticJNA extends AbstractJNAFeature {
         // when JNA is initialized at image runtime.
         var nativeLibsImpl = ((BeforeAnalysisAccessImpl) access).getNativeLibraries();
         nativeLibsImpl.addStaticNonJniLibrary(FFI_LINK_NAME);
-        nativeLibsImpl.addStaticJniLibrary(JNA_LINK_NAME);
+        nativeLibsImpl.addStaticJniLibrary(JNA_LINK_NAME, FFI_LINK_NAME);
 
         // Enhance the Native Image lib paths so the injected static libraries are available to the linker
         nativeLibsImpl.getLibraryPaths().add(extractedLib.getParentFile().getAbsolutePath());
